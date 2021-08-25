@@ -1,0 +1,1 @@
+javascript program simulating the game rock-paper-scissors
