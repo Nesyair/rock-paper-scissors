@@ -67,17 +67,24 @@ function playRound(playerSelection, computerSelection) {
   console.log(playRound(playerSelection.toLowerCase(), computerSelection.toLowerCase()));
   */
 
-function game() {
-    let userVictories = 0;
-    let computerVictories = 0;
+function game(selection) {
+    
+    if (userVictories >= 5 || computerVictories >= 5) {
+        divResult.textContent = "";
+        userVictories = 0;
+        computerVictories = 0;
+        return;
+    }
 
-    let i = 0;
+
+
     let playerSelection;
     let computerSelection;
     let roundResult;
-    for(i = 0; i < 5; i++) {
+    if(userVictories < 5 && computerVictories < 5) {
 
-        playerSelection = prompt("Round "+(i+1)+"\nSelect rock, paper or scissors").toLowerCase();
+       // playerSelection = prompt("Round "+(i+1)+"\nSelect rock, paper or scissors").toLowerCase();
+        playerSelection = selection;
         computerSelection = computerPlay();
 
         roundResult = playRound( playerSelection.toLowerCase(), computerSelection.toLowerCase());
@@ -86,18 +93,58 @@ function game() {
         } else if (roundResult.search("computer") !== -1){
             computerVictories++
         } 
-
+        divResult.innerText += "\n\n" + playRound(playerSelection.toLowerCase(), computerSelection.toLowerCase()) +
+        "Player: "+userVictories + "     "+"Computer: "+computerVictories;
         console.log(playRound(playerSelection.toLowerCase(), computerSelection.toLowerCase()));
     }
-
-    if(userVictories > computerVictories) {
-        console.log("Player Wins Game");
-    } else if (computerVictories > userVictories) {
-        console.log("Computer Wins Game");
-    } else {
-        console.log("Game is a draw");
+    
+    if (userVictories >= 5 || computerVictories >= 5) {
+        if(userVictories > computerVictories) {
+            divResult.innerText += "\n" + "Player Wins Game"; 
+            console.log("Player Wins Game");
+            
+        } else if (computerVictories > userVictories) {
+            divResult.innerText += "\n" + "Computer Wins Game"; 
+            console.log("Computer Wins Game");
+            
+        } else {
+            divResult.innerText += "\n" + "Game is a draw"; 
+            console.log("Game is a draw");
+            
+        }
     }
+
+    
 
 }
 
-game();
+let userVictories = 0;
+let computerVictories = 0;
+
+const btnRock = document.createElement("button");
+const btnPaper = document.createElement("button");
+const btnScissors = document.createElement("button");
+
+btnRock.textContent = "rock";
+btnPaper.textContent = "paper";
+btnScissors.textContent = "scissors";
+
+const divResult = document.createElement("div");
+divResult.setAttribute('id', 'result');
+
+
+document.querySelector("body").appendChild(btnRock);
+document.querySelector("body").appendChild(btnPaper);
+document.querySelector("body").appendChild(btnScissors);
+document.querySelector("body").appendChild(divResult);
+
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        game(button.textContent);
+    });
+});
+
+
+//game();
